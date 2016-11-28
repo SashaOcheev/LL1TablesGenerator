@@ -19,6 +19,7 @@ public:
 
 		SetSize(grammar, premisses);
 		SetEnds(grammar, premisses);
+		SetErrors(grammar, premisses);
 
 		int i = 5;
 	}
@@ -63,7 +64,7 @@ protected:
 		return premisses;
 	}
 
-	void SetSize(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, std::vector<size_t> premisses)
+	void SetSize(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
 	{
 		if (premisses.empty())
 		{
@@ -79,7 +80,7 @@ protected:
 		m_table.resize(size);
 	}
 
-	void SetEnds(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, std::vector<size_t> premisses)
+	void SetEnds(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
 	{
 		for (auto &i : m_table)
 		{
@@ -123,6 +124,30 @@ protected:
 				}
 			}
 			++i;
+		}
+	}
+
+	void SetErrors(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
+	{
+		for (auto &i : m_table)
+		{
+			i.isError = true;
+		}
+
+		for (size_t i = 0; i < grammar.size(); ++i)
+		{
+			for (size_t j = 0; j < grammar[i].second.size(); ++j)
+			{
+				if (j + 1 < grammar[i].second.size())
+				{
+					size_t k = premisses[i] + j;
+					for (size_t n = 0; n < j; ++n)
+					{
+						k += grammar[i].second[n].size();
+					}
+					m_table[k].isError = false;
+				}
+			}
 		}
 	}
 
