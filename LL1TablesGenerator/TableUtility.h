@@ -13,7 +13,7 @@ struct TableRow
 	int transition;
 	bool isStack;
 	bool isError;
-	bool isFinish;
+	bool isEnd;
 };
 
 enum class Token
@@ -36,7 +36,10 @@ public:
 		{
 			throw std::domain_error("Epsilon always is empty");
 		}
-	}
+	};
+
+	bool operator==(const CToken &other) const;
+	bool operator!=(const CToken &other) const;
 
 	Token GetType() const;
 	std::string GetToken() const;
