@@ -20,6 +20,7 @@ public:
 		SetSize(grammar, premisses);
 		SetEnds(grammar, premisses);
 		SetErrors(grammar, premisses);
+		SetStack(grammar, premisses);
 
 		int i = 5;
 	}
@@ -146,6 +147,28 @@ protected:
 						k += grammar[i].second[n].size();
 					}
 					m_table[k].isError = false;
+				}
+			}
+		}
+	}
+
+	void SetStack(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
+	{
+		for (auto &i : m_table)
+		{
+			i.isStack = false;
+		}
+
+		for (size_t i = 0; i < grammar.size(); ++i)
+		{
+			for (const auto &j : grammar[i].second)
+			{
+				for (size_t k = 0; k < j.size() - 1; ++k)
+				{
+					if (j[k].GetType() == Token::NONTERMINAL)
+					{
+						m_table[premisses[i] + grammar[i].second.size() + k].isStack = true;
+					}
 				}
 			}
 		}
