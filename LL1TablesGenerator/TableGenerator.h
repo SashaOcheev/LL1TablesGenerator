@@ -210,6 +210,17 @@ protected:
 							m_table[tablePos + tok].transition = -1;
 						}
 					}
+					else
+					{
+						//find in premiss
+						for (size_t n = 0; n < grammar.size(); ++n)
+						{
+							if (grammar[i].second[j][tok] == grammar[n].first)
+							{
+								m_table[tablePos + tok].transition = premisses[n];
+							}
+						}
+					}
 				}
 			}
 
