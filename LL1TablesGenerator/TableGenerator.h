@@ -23,8 +23,6 @@ public:
 		SetStack(grammar, premisses);
 		SetTransition(grammar, premisses);
 		SetShift(grammar, premisses);
-
-		int i = 5;
 	}
 
 	std::vector<TableRow> GetTable() const
@@ -248,15 +246,13 @@ protected:
 						{
 							pos += grammar[i].second[n].size();
 						}
-						if (!m_table[pos].isEnd)
-						{
-							m_table[pos].isShift = true;
-						}
+						m_table[pos].isShift = true;
 					}
 				}
 			}
 		}
 	}
+
 
 private:
 	std::vector<TableRow> m_table;
