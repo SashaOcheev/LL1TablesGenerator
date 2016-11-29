@@ -22,6 +22,7 @@ public:
 		SetError(grammar, premisses);
 		SetStack(grammar, premisses);
 		SetTransition(grammar, premisses);
+		SetShift(grammar, premisses);
 
 		int i = 5;
 	}
@@ -224,6 +225,36 @@ protected:
 				}
 			}
 
+		}
+	}
+
+	void SetShift(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
+	{
+		for (auto &i : m_table)
+		{
+			i.isShift = false;
+		}
+
+		for (size_t i = 0; i < grammar.size(); ++i)
+		{
+			for (size_t j = 0; j < grammar[i].second.size(); ++j)
+			{
+				for (size_t k = 0; k < grammar[i].second[j].size(); ++k)
+				{
+					if (grammar[i].second[j][k].GetType() == Token::TERMINAL)
+					{
+						size_t pos = premisses[i] + grammar[i].second.size() + k;
+						for (size_t n = 0; n < j; ++n)
+						{
+							pos += grammar[i].second[n].size();
+						}
+						if (!m_table[pos].isEnd)
+						{
+							m_table[pos].isShift = true;
+						}
+					}
+				}
+			}
 		}
 	}
 
