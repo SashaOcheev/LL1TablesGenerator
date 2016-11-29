@@ -18,9 +18,10 @@ public:
 		auto premisses = GetPremisses(grammar);
 
 		SetSize(grammar, premisses);
-		SetEnds(grammar, premisses);
-		SetErrors(grammar, premisses);
+		SetEnd(grammar, premisses);
+		SetError(grammar, premisses);
 		SetStack(grammar, premisses);
+		SetTransition(grammar, premisses);
 
 		int i = 5;
 	}
@@ -81,7 +82,7 @@ protected:
 		m_table.resize(size);
 	}
 
-	void SetEnds(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
+	void SetEnd(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
 	{
 		for (auto &i : m_table)
 		{
@@ -128,7 +129,7 @@ protected:
 		}
 	}
 
-	void SetErrors(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
+	void SetError(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
 	{
 		for (auto &i : m_table)
 		{
@@ -171,6 +172,47 @@ protected:
 					}
 				}
 			}
+		}
+	}
+
+	void SetTransition(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses)
+	{
+		for (size_t i = 0; i < grammar.size(); ++i)
+		{
+			for (size_t j = 0; j < grammar[i].second.size(); ++j)
+			{
+
+				//set premisse transitions
+				size_t k = grammar[i].second.size();
+				size_t tablePos = premisses[i] + k;//
+				for (size_t n = 0; n < j; ++n)
+				{
+					tablePos += grammar[i].second[n].size();
+				}
+
+				for (size_t n = 0; n < j; ++n)
+				{
+					k += grammar[i].second[n].size();
+				}
+				m_table[premisses[i] + j].transition = k + premisses[i];
+
+				//set chain transition
+				for (size_t tok = 0; tok < grammar[i].second[j].size(); ++tok)
+				{
+					if (grammar[i].second[j][tok].GetType() != Token::NONTERMINAL)
+					{
+						if (tok < grammar[i].second[j].size() - 1)
+						{
+							m_table[tablePos + tok].transition = tablePos + tok + 1;
+						}
+						else
+						{
+							m_table[tablePos + tok].transition = -1;
+						}
+					}
+				}
+			}
+
 		}
 	}
 
