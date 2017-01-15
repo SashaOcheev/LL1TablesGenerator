@@ -5,6 +5,7 @@
 #include <list>
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 
 struct TableRow
 {
@@ -15,6 +16,8 @@ struct TableRow
 	bool isError;
 	bool isEnd;
 };
+
+void PrintTableRow(const TableRow &tableRow);
 
 enum class Token
 {

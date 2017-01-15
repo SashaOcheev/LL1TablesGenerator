@@ -5,6 +5,8 @@
 
 #include "TableGenerator.h"
 
+using namespace std;
+
 std::pair<CToken, std::vector<std::vector<CToken>>> MakeGrammarLine(const std::string &premiss, const std::vector<std::vector<CToken>> &chain)
 {
 	return std::make_pair(CToken(premiss, Token::NONTERMINAL), chain);
@@ -24,6 +26,9 @@ int main()
 	};
 
 	CTableGenerator table(grammar);
+
+	auto t = table.GetTable();
+	PrintTable(t);
 
     return 0;
 }

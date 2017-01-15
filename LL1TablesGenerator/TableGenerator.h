@@ -8,6 +8,8 @@
 #include <stack>
 #include <algorithm>
 
+void PrintTable(const std::vector<TableRow> &table);
+
 class CTableGenerator
 {
 public:
@@ -28,6 +30,7 @@ protected:
 	void SetStack();
 	void SetTransition();
 	void SetShift();
+	void SetStartSet();
 
 
 private:

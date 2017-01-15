@@ -20,3 +20,17 @@ std::string CToken::GetToken() const
 {
 	return m_token;
 }
+
+void PrintTableRow(const TableRow & tableRow)
+{
+	for (const auto &str : tableRow.startSet)
+	{
+		std::cout << str << " ";
+	}
+	std::cout << tableRow.isShift << "\t";
+	std::cout << tableRow.transition << "\t";
+	std::cout << tableRow.isStack << "\t";
+	std::cout << tableRow.isError << "\t";
+	std::cout << tableRow.isEnd << "\t";
+	std::cout << std::endl;
+}

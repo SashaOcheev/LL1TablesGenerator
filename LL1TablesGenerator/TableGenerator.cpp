@@ -14,7 +14,11 @@ CTableGenerator::CTableGenerator(const std::vector<std::pair<CToken, std::vector
 	SetStack();
 	SetTransition();
 	SetShift();
+	SetStartSet();
+
 }
+
+using namespace std;
 
 std::vector<TableRow> CTableGenerator::GetTable() const
 {
@@ -48,7 +52,7 @@ void CTableGenerator::Setpremises()
 			i += j.size() + 1;
 		}
 	}
-
+	
 	m_premises = premises;
 }
 
@@ -238,5 +242,38 @@ void CTableGenerator::SetShift()
 				}
 			}
 		}
+	}
+}
+
+void CTableGenerator::SetStartSet()
+{
+	//if non-terminal
+	for (size_t i = 0; i < m_grammar.size(); ++i)
+	{
+		for (size_t j = 0; j < m_grammar[i].second.size(); ++j)
+		{
+			for (size_t k = 0; k < m_grammar[i].second[j].size(); ++k)
+			{
+				if (m_grammar[i].second[j][k].GetType() == Token::TERMINAL)
+				{
+					size_t pos = m_premises[i] + m_grammar[i].second.size() + k;
+					for (size_t n = 0; n < j; ++n)
+					{
+						pos += m_grammar[i].second[n].size();
+					}
+					m_table[pos].startSet.insert(m_grammar[i].second[j][k].GetToken());
+				}
+			}
+		}
+	}
+}
+
+
+
+void PrintTable(const std::vector<TableRow>& table)
+{
+	for (const auto& row : table)
+	{
+		PrintTableRow(row);
 	}
 }
