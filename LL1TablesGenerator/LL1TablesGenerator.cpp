@@ -28,7 +28,7 @@ int main()
 	CTableGenerator table(grammar);
 
 	auto t = table.GetTable();
-	PrintTable(t);
+	PrintTable(std::cout, t);
 
     return 0;
 }

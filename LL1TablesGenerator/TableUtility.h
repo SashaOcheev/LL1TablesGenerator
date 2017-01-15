@@ -17,7 +17,7 @@ struct TableRow
 	bool isEnd;
 };
 
-void PrintTableRow(const TableRow &tableRow);
+void PrintTableRow(std::ostream &strm, const TableRow &tableRow);
 
 enum class Token
 {

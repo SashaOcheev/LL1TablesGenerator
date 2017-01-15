@@ -8,7 +8,7 @@
 #include <stack>
 #include <algorithm>
 
-void PrintTable(const std::vector<TableRow> &table);
+void PrintTable(std::ostream &strm, const std::vector<TableRow> &table);
 
 class CTableGenerator
 {

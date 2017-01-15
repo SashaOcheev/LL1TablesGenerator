@@ -21,16 +21,16 @@ std::string CToken::GetToken() const
 	return m_token;
 }
 
-void PrintTableRow(const TableRow & tableRow)
+void PrintTableRow(std::ostream &strm, const TableRow & tableRow)
 {
-	std::cout << tableRow.isShift << "\t";
-	std::cout << tableRow.transition << "\t";
-	std::cout << tableRow.isStack << "\t";
-	std::cout << tableRow.isError << "\t";
-	std::cout << tableRow.isEnd << "\t";
+	strm << tableRow.isShift << "\t";
+	strm << tableRow.transition << "\t";
+	strm << tableRow.isStack << "\t";
+	strm << tableRow.isError << "\t";
+	strm << tableRow.isEnd << "\t";
 	for (const auto &str : tableRow.startSet)
 	{
-		std::cout << str << " ";
+		strm << str << " ";
 	}
-	std::cout << std::endl;
+	strm << std::endl;
 }

@@ -294,10 +294,10 @@ void CTableGenerator::SetStartSetForConcreteNonTerminal(size_t premisePos)
 }
 
 
-void PrintTable(const std::vector<TableRow>& table)
+void PrintTable(std::ostream &strm, const std::vector<TableRow>& table)
 {
 	for (const auto& row : table)
 	{
-		PrintTableRow(row);
+		PrintTableRow(strm, row);
 	}
 }
