@@ -4,15 +4,16 @@
 CTableGenerator::CTableGenerator(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar)
 {
 	IsRightGrammar(grammar);
+	m_grammar = grammar;
 
-	auto premisses = GetPremisses(grammar);
+	Setpremises();
 
-	SetSize(grammar, premisses);
-	SetEnd(grammar, premisses);
-	SetError(grammar, premisses);
-	SetStack(grammar, premisses);
-	SetTransition(grammar, premisses);
-	SetShift(grammar, premisses);
+	SetSize();
+	SetEnd();
+	SetError();
+	SetStack();
+	SetTransition();
+	SetShift();
 }
 
 std::vector<TableRow> CTableGenerator::GetTable() const
@@ -34,32 +35,32 @@ bool CTableGenerator::IsRightGrammar(const std::vector<std::pair<CToken, std::ve
 	return true;
 }
 
-std::vector<size_t> CTableGenerator::GetPremisses(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar) const
+void CTableGenerator::Setpremises()
 {
-	std::vector<size_t> premisses;
+	std::vector<size_t> premises;
 
 	size_t i = 0;
-	for (const auto &line : grammar)
+	for (const auto &line : m_grammar)
 	{
-		premisses.push_back(i);
+		premises.push_back(i);
 		for (const auto &j : line.second)
 		{
 			i += j.size() + 1;
 		}
 	}
 
-	return premisses;
+	m_premises = premises;
 }
 
-void CTableGenerator::SetSize(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar, const std::vector<size_t>& premisses)
+void CTableGenerator::SetSize()
 {
-	if (premisses.empty())
+	if (m_premises.empty())
 	{
 		return;
 	}
 
-	size_t size = premisses.back();
-	for (const auto &vec : grammar.back().second)
+	size_t size = m_premises.back();
+	for (const auto &vec : m_grammar.back().second)
 	{
 		size += vec.size() + 1;
 	}
@@ -67,7 +68,7 @@ void CTableGenerator::SetSize(const std::vector<std::pair<CToken, std::vector<st
 	m_table.resize(size);
 }
 
-void CTableGenerator::SetEnd(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar, const std::vector<size_t>& premisses)
+void CTableGenerator::SetEnd()
 {
 	for (auto &i : m_table)
 	{
@@ -78,26 +79,26 @@ void CTableGenerator::SetEnd(const std::vector<std::pair<CToken, std::vector<std
 	size_t i = 0;
 	while (i < may_end.size())
 	{
-		for (size_t j = 0; j < grammar[may_end[i]].second.size(); ++j)
+		for (size_t j = 0; j < m_grammar[may_end[i]].second.size(); ++j)
 		{
-			if (grammar[may_end[i]].second[j].back().GetType() == Token::EPSILON || grammar[may_end[i]].second[j].back().GetType() == Token::TERMINAL)
+			if (m_grammar[may_end[i]].second[j].back().GetType() == Token::EPSILON || m_grammar[may_end[i]].second[j].back().GetType() == Token::TERMINAL)
 			{
-				size_t k = premisses[i] + j;
+				size_t k = m_premises[i] + j;
 				for (size_t n = 0; n <= j; ++n)
 				{
-					k += grammar[may_end[i]].second[n].size();
+					k += m_grammar[may_end[i]].second[n].size();
 				}
 				m_table[k].isEnd = true;
 			}
-			else if (grammar[may_end[i]].second[j].back().GetType() == Token::NONTERMINAL)
+			else if (m_grammar[may_end[i]].second[j].back().GetType() == Token::NONTERMINAL)
 			{
 				//add to may_end if it has not
 
 				//find_number
 				size_t k = 0;
-				for (; k < grammar.size(); ++k)
+				for (; k < m_grammar.size(); ++k)
 				{
-					if (grammar[may_end[i]].second[j].back() == grammar[k].first)
+					if (m_grammar[may_end[i]].second[j].back() == m_grammar[k].first)
 					{
 						break;
 					}
@@ -114,23 +115,23 @@ void CTableGenerator::SetEnd(const std::vector<std::pair<CToken, std::vector<std
 	}
 }
 
-void CTableGenerator::SetError(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar, const std::vector<size_t>& premisses)
+void CTableGenerator::SetError()
 {
 	for (auto &i : m_table)
 	{
 		i.isError = true;
 	}
 
-	for (size_t i = 0; i < grammar.size(); ++i)
+	for (size_t i = 0; i < m_grammar.size(); ++i)
 	{
-		for (size_t j = 0; j < grammar[i].second.size(); ++j)
+		for (size_t j = 0; j < m_grammar[i].second.size(); ++j)
 		{
-			if (j + 1 < grammar[i].second.size())
+			if (j + 1 < m_grammar[i].second.size())
 			{
-				size_t k = premisses[i] + j;
+				size_t k = m_premises[i] + j;
 				for (size_t n = 0; n < j; ++n)
 				{
-					k += grammar[i].second[n].size();
+					k += m_grammar[i].second[n].size();
 				}
 				m_table[k].isError = false;
 			}
@@ -138,22 +139,22 @@ void CTableGenerator::SetError(const std::vector<std::pair<CToken, std::vector<s
 	}
 }
 
-void CTableGenerator::SetStack(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar, const std::vector<size_t>& premisses)
+void CTableGenerator::SetStack()
 {
 	for (auto &i : m_table)
 	{
 		i.isStack = false;
 	}
 
-	for (size_t i = 0; i < grammar.size(); ++i)
+	for (size_t i = 0; i < m_grammar.size(); ++i)
 	{
-		for (const auto &j : grammar[i].second)
+		for (const auto &j : m_grammar[i].second)
 		{
 			for (size_t k = 0; k < j.size() - 1; ++k)
 			{
 				if (j[k].GetType() == Token::NONTERMINAL)
 				{
-					auto idx = premisses[i] + grammar[i].second.size() + k;
+					auto idx = m_premises[i] + m_grammar[i].second.size() + k;
 					m_table[idx].isStack = true;
 				}
 			}
@@ -161,33 +162,33 @@ void CTableGenerator::SetStack(const std::vector<std::pair<CToken, std::vector<s
 	}
 }
 
-void CTableGenerator::SetTransition(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar, const std::vector<size_t>& premisses)
+void CTableGenerator::SetTransition()
 {
-	for (size_t i = 0; i < grammar.size(); ++i)
+	for (size_t i = 0; i < m_grammar.size(); ++i)
 	{
-		for (size_t j = 0; j < grammar[i].second.size(); ++j)
+		for (size_t j = 0; j < m_grammar[i].second.size(); ++j)
 		{
 
 			//set premisse transitions
-			size_t k = grammar[i].second.size();
-			size_t tablePos = premisses[i] + k;//
+			size_t k = m_grammar[i].second.size();
+			size_t tablePos = m_premises[i] + k;//
 			for (size_t n = 0; n < j; ++n)
 			{
-				tablePos += grammar[i].second[n].size();
+				tablePos += m_grammar[i].second[n].size();
 			}
 
 			for (size_t n = 0; n < j; ++n)
 			{
-				k += grammar[i].second[n].size();
+				k += m_grammar[i].second[n].size();
 			}
-			m_table[premisses[i] + j].transition = k + premisses[i];
+			m_table[m_premises[i] + j].transition = k + m_premises[i];
 
 			//set chain transition
-			for (size_t tok = 0; tok < grammar[i].second[j].size(); ++tok)
+			for (size_t tok = 0; tok < m_grammar[i].second[j].size(); ++tok)
 			{
-				if (grammar[i].second[j][tok].GetType() != Token::NONTERMINAL)
+				if (m_grammar[i].second[j][tok].GetType() != Token::NONTERMINAL)
 				{
-					if (tok < grammar[i].second[j].size() - 1)
+					if (tok < m_grammar[i].second[j].size() - 1)
 					{
 						m_table[tablePos + tok].transition = tablePos + tok + 1;
 					}
@@ -199,11 +200,11 @@ void CTableGenerator::SetTransition(const std::vector<std::pair<CToken, std::vec
 				else
 				{
 					//find in premiss
-					for (size_t n = 0; n < grammar.size(); ++n)
+					for (size_t n = 0; n < m_grammar.size(); ++n)
 					{
-						if (grammar[i].second[j][tok] == grammar[n].first)
+						if (m_grammar[i].second[j][tok] == m_grammar[n].first)
 						{
-							m_table[tablePos + tok].transition = premisses[n];
+							m_table[tablePos + tok].transition = m_premises[n];
 						}
 					}
 				}
@@ -213,25 +214,25 @@ void CTableGenerator::SetTransition(const std::vector<std::pair<CToken, std::vec
 	}
 }
 
-void CTableGenerator::SetShift(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar, const std::vector<size_t>& premisses)
+void CTableGenerator::SetShift()
 {
 	for (auto &i : m_table)
 	{
 		i.isShift = false;
 	}
 
-	for (size_t i = 0; i < grammar.size(); ++i)
+	for (size_t i = 0; i < m_grammar.size(); ++i)
 	{
-		for (size_t j = 0; j < grammar[i].second.size(); ++j)
+		for (size_t j = 0; j < m_grammar[i].second.size(); ++j)
 		{
-			for (size_t k = 0; k < grammar[i].second[j].size(); ++k)
+			for (size_t k = 0; k < m_grammar[i].second[j].size(); ++k)
 			{
-				if (grammar[i].second[j][k].GetType() == Token::TERMINAL)
+				if (m_grammar[i].second[j][k].GetType() == Token::TERMINAL)
 				{
-					size_t pos = premisses[i] + grammar[i].second.size() + k;
+					size_t pos = m_premises[i] + m_grammar[i].second.size() + k;
 					for (size_t n = 0; n < j; ++n)
 					{
-						pos += grammar[i].second[n].size();
+						pos += m_grammar[i].second[n].size();
 					}
 					m_table[pos].isShift = true;
 				}

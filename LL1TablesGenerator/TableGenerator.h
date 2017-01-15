@@ -20,16 +20,19 @@ public:
 protected:
 
 	bool IsRightGrammar(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar) const; //TODO is LL1
-	std::vector<size_t> GetPremisses(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar) const;
-	void SetSize(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses);
+	void Setpremises();
+	void SetSize();
 
-	void SetEnd(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses);
-	void SetError(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses);
-	void SetStack(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses);
-	void SetTransition(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses);
-	void SetShift(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> &grammar, const std::vector<size_t> &premisses);
+	void SetEnd();
+	void SetError();
+	void SetStack();
+	void SetTransition();
+	void SetShift();
 
 
 private:
 	std::vector<TableRow> m_table;
+	std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> m_grammar;
+	std::vector<size_t> m_premises;
+
 };
