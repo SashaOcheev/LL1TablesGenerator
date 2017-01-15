@@ -14,7 +14,8 @@ CTableGenerator::CTableGenerator(const std::vector<std::pair<CToken, std::vector
 	SetStack();
 	SetTransition();
 	SetShift();
-	SetStartSet();
+	SetStartSetForTerminals();
+	SetStartSetForNonTerminals();
 
 }
 
@@ -245,7 +246,7 @@ void CTableGenerator::SetShift()
 	}
 }
 
-void CTableGenerator::SetStartSet()
+void CTableGenerator::SetStartSetForTerminals()
 {
 	//if non-terminal
 	for (size_t i = 0; i < m_grammar.size(); ++i)
@@ -268,6 +269,29 @@ void CTableGenerator::SetStartSet()
 	}
 }
 
+void CTableGenerator::SetStartSetForNonTerminals()
+{
+	for (size_t i = 0; i < m_grammar.size(); ++i)
+	{
+		if (!m_table[m_premises[i]].startSet.empty())
+		{
+			continue;
+		}
+		SetStartSetForConcreteNonTerminal(i);
+	}
+}
+
+void CTableGenerator::SetStartSetForConcreteNonTerminal(size_t premisePos)
+{
+	for (size_t i = 0; i < m_grammar[premisePos].second.size(); ++i)
+	{
+		auto token = m_grammar[premisePos].second[i].front();
+		if (token.GetType() == Token::TERMINAL)
+		{
+			m_table[m_premises[premisePos]].startSet.insert(token.GetToken());
+		}
+	}
+}
 
 
 void PrintTable(const std::vector<TableRow>& table)

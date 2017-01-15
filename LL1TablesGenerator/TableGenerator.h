@@ -30,7 +30,9 @@ protected:
 	void SetStack();
 	void SetTransition();
 	void SetShift();
-	void SetStartSet();
+	void SetStartSetForTerminals();
+	void SetStartSetForNonTerminals();
+	void SetStartSetForConcreteNonTerminal(size_t premisesPos);
 
 
 private:
