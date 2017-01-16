@@ -34,3 +34,18 @@ void PrintTableRow(std::ostream &strm, const TableRow & tableRow)
 	}
 	strm << std::endl;
 }
+
+void PrintTableRowForC(std::ostream & strm, const TableRow & tableRow)
+{
+	strm << "LL1TableString({";
+	for (const auto &str : tableRow.startSet)
+	{
+		strm << "\"" << str << "\"" << ",";
+	}
+	strm << "}, "<< tableRow.isShift << ", ";
+	strm << tableRow.transition << ", ";
+	strm << tableRow.isStack << ", ";
+	strm << tableRow.isError << ", ";
+	strm << tableRow.isEnd << "),";
+	strm << std::endl;
+}

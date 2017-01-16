@@ -18,6 +18,7 @@ struct TableRow
 };
 
 void PrintTableRow(std::ostream &strm, const TableRow &tableRow);
+void PrintTableRowForC(std::ostream &strm, const TableRow &tableRow);
 
 enum class Token
 {

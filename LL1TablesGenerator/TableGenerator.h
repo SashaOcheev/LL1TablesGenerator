@@ -9,6 +9,7 @@
 #include <algorithm>
 
 void PrintTable(std::ostream &strm, const std::vector<TableRow> &table);
+void PrintTableForC(std::ostream &strm, const std::vector<TableRow> &table);
 
 class CTableGenerator
 {
