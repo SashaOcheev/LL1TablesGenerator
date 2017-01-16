@@ -50,5 +50,7 @@ private:
 CToken InitTokenByString(const std::string &str);
 
 std::pair<CToken, std::vector<std::vector<CToken>>> InitGrammarLine(const std::vector<std::string> &tokens);
+std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> InitGrammar(const std::vector<std::vector<std::string>> &lines);
 
-std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> InitGrammar(const std::vector < std::vector<std::string>> &lines);
+std::pair<CToken, std::vector<std::vector<CToken>>> InitGrammarLine(const std::string &tokens);
+std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> InitGrammar(const std::vector<std::string>& lines);

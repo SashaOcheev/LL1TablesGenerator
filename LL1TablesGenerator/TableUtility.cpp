@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "TableUtility.h"
+#include <algorithm>
+#include <sstream>
+#include <iterator>
 
 
 CToken::CToken(const std::string & token, Token type)
@@ -65,9 +68,9 @@ void PrintTableRowForC(std::ostream & strm, const TableRow & tableRow)
 
 CToken InitTokenByString(const std::string & str)
 {
-	if (str.empty())
+	if (str.empty() || str == "<>")
 	{
-		return(CToken(str));
+		return(CToken(""));
 	}
 	else if (str.front() == '<')
 	{
@@ -108,6 +111,26 @@ std::pair<CToken, std::vector<std::vector<CToken>>> InitGrammarLine(const std::v
 }
 
 std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> InitGrammar(const std::vector<std::vector<std::string>>& lines)
+{
+	std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> grammar;
+	for (const auto &ln : lines)
+	{
+		grammar.push_back(InitGrammarLine(ln));
+	}
+	return grammar;
+}
+
+std::pair<CToken, std::vector<std::vector<CToken>>> InitGrammarLine(const std::string & tokens)
+{
+	std::stringstream ss(tokens);
+	std::istream_iterator<std::string> begin(ss);
+	std::istream_iterator<std::string> end;
+	std::vector<std::string> vstrings(begin, end);
+
+	return InitGrammarLine(vstrings);
+}
+
+std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> InitGrammar(const std::vector<std::string>& lines)
 {
 	std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> grammar;
 	for (const auto &ln : lines)

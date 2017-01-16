@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include "TableGenerator.h"
+#include "TableUtility.h"
 
 using namespace std;
 
@@ -86,6 +87,15 @@ int main()
 		{"<A>", ":", ",", "<idlist>", "|", ""},
 		{"<lists>", ":", "st", "<B>"},
 		{"<B>", ":", "<lists>", "|", ""}
+	});
+	grammar.clear();
+	grammar = InitGrammar({
+		"<PROG> : PROG id <VAR> begin <lists> end",
+		 "<VAR> : VAR <idlist>" ,
+		 "<idlist> : id <A>" ,
+		 "<A> : , <idlist> | <>" ,
+		 "<lists> : st <B>" ,
+		 "<B> : <lists> | <>" 
 	});
 
 	CTableGenerator table(grammar);
