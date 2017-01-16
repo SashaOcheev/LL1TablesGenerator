@@ -6,6 +6,7 @@
 #include <vector>
 #include <unordered_map>
 #include <iostream>
+#include <string>
 
 struct TableRow
 {
@@ -32,15 +33,7 @@ class CToken
 public:
 	CToken() = delete;
 
-	CToken(const std::string &token, Token type = Token::EPSILON)
-		: m_token(token)
-		, m_type(type)
-	{
-		if (m_type == Token::EPSILON && token != "")
-		{
-			throw std::domain_error("Epsilon always is empty");
-		}
-	};
+	CToken(const std::string &token, Token type = Token::EPSILON);
 
 	bool operator==(const CToken &other) const;
 	bool operator!=(const CToken &other) const;
@@ -52,3 +45,10 @@ private:
 	std::string m_token;
 	Token m_type;
 };
+
+//"<NONTERMINAL>", "TERMINAL", "" - epsilon 
+CToken InitTokenByString(const std::string &str);
+
+std::pair<CToken, std::vector<std::vector<CToken>>> InitGrammarLine(const std::vector<std::string> &tokens);
+
+std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> InitGrammar(const std::vector < std::vector<std::string>> &lines);

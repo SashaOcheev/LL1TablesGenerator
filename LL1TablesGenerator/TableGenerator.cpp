@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TableGenerator.h"
+#include <fstream>
 
 CTableGenerator::CTableGenerator(const std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>>& grammar)
 {
@@ -14,7 +15,7 @@ CTableGenerator::CTableGenerator(const std::vector<std::pair<CToken, std::vector
 	SetStack();
 	SetTransition();
 	SetShift();
-	SetStartSetForTerminals();
+	//SetStartSetForTerminals();
 	//SetStartSetForNonTerminals();
 
 }
@@ -308,11 +309,11 @@ void PrintTable(std::ostream &strm, const std::vector<TableRow>& table)
 
 void PrintTableForC(std::ostream & strm, const std::vector<TableRow>& table)
 {
-	cout << "LL1Table table1 = \n{\n";
+	strm << "LL1Table table1 = \n{\n";
 	for (const auto& row : table)
 	{
-		cout << "\t";
+		strm << "\t";
 		PrintTableRowForC(strm, row);
 	}
-	cout << "};\n";
+	strm << "};\n";
 }
