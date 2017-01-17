@@ -10,6 +10,7 @@ CTableGenerator::CTableGenerator(const std::vector<std::pair<CToken, std::vector
 	Setpremises();
 
 	SetSize();
+
 	SetEnd();
 	SetError();
 	SetStack();

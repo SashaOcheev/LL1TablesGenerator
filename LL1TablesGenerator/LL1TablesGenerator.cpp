@@ -68,10 +68,10 @@ GrammarType GetArithmetics()
 		"<expr> : <paren> <after> | <type> <after>",
 		"<after> : <act> <expr> | <>",
 		"<paren> : ( <sign-expr> )",
-		"<act> : / | * | % | * | - | +",
+		"<act> : / | * | % | - | +",
 		"<type> : int | float | <id>",
 		"<id> : id <idx>",
-		"<idx> : [ <after-idx>",
+		"<idx> : [ <after-idx> | <>",
 		"<after-idx> : int ] | id ]",
 		"<sign> : + | - | <>"
 	});
