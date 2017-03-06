@@ -18,11 +18,11 @@
             | READ ( <data> ) NEWLINE
             | PRINT ( <data> ) NEWLINE
             | RETURN ( <data> ) NEWLINE
-            | <data> <all_expression> NEWLINE
+            | <data> <assignment_expression> NEWLINE
             | <const_assignment> NEWLINE
             | <list_creation> NEWLINE
             | NEWLINE
-<insert_bool> : ( <data> <bool_expression> )
+<insert_bool> : ? <data> <bool_expression> ?
 <if_statement> : <one_if_statement> <if_statement_app>
 <one_if_statement> : IF <insert_bool> <construction>  
 <if_statement_app> : <elif_statement> <else_statement>
@@ -33,11 +33,10 @@
 <while_statement> : WHILE <insert_bool> <construction>
                   | DO <construction> WHILE <insert_bool> NEWLINE
 <paren_expr> : ( <expression> )
-<all_expression> : <expression_app> 
-                 | <assignment_expression>
 <expression> : <data> <expression_app>      
-<expression_app> : <arithmetic_expression> 
-                 | <bool_expression>   
+<expression_app> : <arithmetic_act> <data> <arithmetic_expression> 
+                 | <bool_act> <data> <bool_expression> 
+                 | <>
 <arithmetic_expression> : <arithmetic_act> <data> <arithmetic_expression> 
                         | <>     
 <arithmetic_act> : + 
@@ -45,8 +44,8 @@
                  | * 
                  | / 
                  | %
+                 
 <bool_expression> : <bool_act> <data> <bool_expression> 
-                  | ! <bool_expression> 
                   | <>
                   
 <bool_act> : MORE 
