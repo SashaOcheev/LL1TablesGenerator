@@ -69,7 +69,8 @@ void CTableGenerator::SetSize()
 	size_t size = m_premises.back();
 	for (const auto &vec : m_grammar.back().second)
 	{
-		size += vec.size() + 1;
+		auto t = vec.size() + 1;
+		size += t;
 	}
 
 	m_table.resize(size);

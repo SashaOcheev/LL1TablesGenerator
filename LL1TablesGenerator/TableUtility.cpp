@@ -135,7 +135,8 @@ std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> InitGrammar(con
 	std::vector<std::pair<CToken, std::vector<std::vector<CToken>>>> grammar;
 	for (const auto &ln : lines)
 	{
-		grammar.push_back(InitGrammarLine(ln));
+		auto t = InitGrammarLine(ln);
+		grammar.push_back(t);
 	}
 	return grammar;
 }
