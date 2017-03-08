@@ -41,15 +41,16 @@
 <declar_2> : <right_assign>
            | <>
 <assign> : <index> = <right_assign>
-<list> : LESS <right_assign> MORE
+<list> : LESS <list_row> MORE
 <fuction_call> : FUNCTIONID ( <list_row> )
-<list_row> : <list_row_1>
+<list_row> : <right_assign> <list_row_1>
+           | <>
 <list_row_1> : , <right_assign> <list_row_1>
              | <>
-<right_assign> : <list_row>
+<right_assign> : <list>
                | <all_expr>
 <all_expr> : <all_expr_1> <all_expr_2>
-<all_expr_1> : <condition_expr>
+<all_expr_1> : ( <arith-expr> )
              | <all_non_paren_expr>
 <all_expr_2> : <all_act> <all_expr_1>
              | <>
@@ -72,7 +73,7 @@
 <arith_expr_1> : ( <arith_expr> )
              | <arith_non_paren_expr>
 <arith_expr_2> : <arith_act> <arith_expr_1>
-             | <>
+               | <>
 <arith_non_paren_expr> : <arith_atom> <arith_non_paren_expr_1>
 <arith_non_paren_expr_1> : <arith_act> <arith_non_paren_expr>
              | <>
