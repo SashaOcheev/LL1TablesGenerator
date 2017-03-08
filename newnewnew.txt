@@ -1,0 +1,97 @@
+<s> : <function_list> MAIN <construction>
+<function_list> : <function> <function_list>
+                | <>
+<function> : FUNCTIONID ( <argument_list> ) <construction>
+           | NEWLINE
+<argument_list> : <typename> ID <argument_list_1>
+                | <>
+<argument_list_1> : , <typename> ID <argument_list_1>
+                  | <>
+<construction> : OPEN <construction_1>
+<construction_1> : <statement_list> CLOSE   
+<statement_list> : <statement> <statement_list>
+                 | <>
+<statement> : <if_statement>
+            | <const_assign>
+            | <declar> NEWLINE
+            | <assign> NEWLINE
+            | <while_statement>
+            | CALL <function_call> NEWLINE
+            | READ <condition_expr> NEWLINE
+            | PRINT <condition_expr> NEWLINE
+            | RETURN <condition_expr> NEWLINE
+            | NEWLINE
+<if_statement> : <one_if_statement> <if_statement_app>
+<one_if_statement> : IF <condition_expr> <construction>
+<if_statement_app> : <elif_statement> <else_statement>
+<elif_statement> : ELIF <condition_expr> <construction> <elif_statement>
+                 | <>
+<else_statement>  : ELSE <construction> | <>
+<while_statement> : WHILE <condition_expr> <construction>
+                  | DO <construction> WHILE <condition_expr> NEWLINE
+<condition_expr> : ( <all_expr> )
+<const_assign> : CONST <typename> ID = <right_assign>
+<declar> : <declar_1> <declar_2>
+<declar_1> : <typename> <index> = <assign>
+<typename> : <list_declar_left>
+           | TYPENAME
+<list_declar_left> : LIST OF <list_declar_left_1>
+<list_declar_left_1> : <list_declar_left>
+                     | TYPENAME
+<declar_2> : <right_assign>
+           | <>
+<assign> : <index> = <right_assign>
+<list> : LESS <right_assign> MORE
+<fuction_call> : FUNCTIONID ( <list_row> )
+<list_row> : <list_row_1>
+<list_row_1> : , <right_assign> <list_row_1>
+             | <>
+<right_assign> : <list_row>
+               | <all_expr>
+<all_expr> : <all_expr_1> <all_expr_2>
+<all_expr_1> : <condition_expr>
+             | <all_non_paren_expr>
+<all_expr_2> : <all_act> <all_expr_1>
+             | <>
+<all_non_paren_expr> : <all_atom> <all_non_paren_expr_1>
+<all_non_paren_expr_1> : <all_act> <all_non_paren_expr>
+             | <>
+<all_act> : <arith_act>
+          | <bool_act>
+<all_atom> : <bool_atom>
+           | <numeric>
+<bool_act> : LESS
+           | MORE
+           | LESSOREQUAL
+           | MOREOREQUAL
+           | ==
+           | !=
+<bool_atom> : <index_funccal>
+            | BOOL
+<arith_expr> : <arith_expr_1> <arith_expr_2>
+<arith_expr_1> : ( <arith_expr> )
+             | <arith_non_paren_expr>
+<arith_expr_2> : <arith_act> <arith_expr_1>
+             | <>
+<arith_non_paren_expr> : <arith_atom> <arith_non_paren_expr_1>
+<arith_non_paren_expr_1> : <arith_act> <arith_non_paren_expr>
+             | <>
+<arith_act> : +
+            | -
+            | *
+            | /
+            | %
+<arith_atom> : <index_funccal>
+             | <numeric>
+<index_funccal> : <index>
+                | <function_call>
+<function_call> : FUNCTIONID ( <data_row> )
+<data_row> : <right_assign> <data_row_1>
+           | <>
+<data_row_1> : , <right_assign> <data_row_1>
+             | <>
+<index> : ID <multidimensional_index>
+<multidimensional_index> : [ <arith_expr> ] <multidimensional_index>
+                         | <>
+<numeric> : INT
+          | FLOAT
