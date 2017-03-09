@@ -65,14 +65,12 @@
       | * 
       | / 
       | %  
-<atom> : <bool_atom> 
-       | INT 
+<atom> : INT 
        | FLOAT 
-       | <index_funccal> 
        | BOOL
        | <index> 
        | <function_call>           
-       | ( non_paren )
+       | ( <non_paren> )
 <index> : ID <multidimensional_index> 
 <multidimensional_index> : [ <arith_expr> ] <multidimensional_index> 
-                         | <> 
+                         | <>
