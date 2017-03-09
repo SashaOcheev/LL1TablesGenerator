@@ -22,15 +22,15 @@
             | RETURN <condition_expr> 
             | NEWLINE 
 <if_statement> : <one_if_statement> <if_statement_app> 
-<one_if_statement> : IF <all_non_paren_expr> NEWLINE <construction> 
+<one_if_statement> : IF <condition_expr> <construction> 
 <if_statement_app> : <elif_statement> <else_statement> 
-<elif_statement> : ELIF <all_non_paren_expr> <construction> <elif_statement> 
+<elif_statement> : ELIF <non_paren> <construction> <elif_statement> 
                  | <> 
 <else_statement> : ELSE <construction>
                  | <> 
-<while_statement> : WHILE <all_non_paren_expr> NEWLINE <construction> 
+<while_statement> : WHILE <condition_expr> <construction> 
                   | DO <construction> WHILE <condition_expr> 
-<condition_expr> : <all_non_paren_expr> NEWLINE
+<condition_expr> : <non_paren> NEWLINE
 <const_assign> : CONST <typename> ID = <right_assign> 
 <declar> : <declar_1> <declar_2> 
 <declar_1> : <typename> ID
@@ -52,7 +52,7 @@
 <right_assign> : <list> 
                | <atom>             
 <non_paren> : <atom> <non_paren_1> 
-<non_paren_1> : <all_act> <non_paren> 
+<non_paren_1> : <act> <non_paren> 
               | <> 
 <act> : LESS 
       | MORE 
