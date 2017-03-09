@@ -50,42 +50,29 @@
              | <> 
 <list_row_2> : <right_assign> <list_row_1> 
 <right_assign> : <list> 
-               | <all_expr>
-<all_non_paren_expr> : <all_atom> <all_non_paren_expr_1> 
-<all_non_paren_expr_1> : <all_act> <all_non_paren_expr> 
-                       | <> 
-<all_act> : <arith_act> 
-          | <bool_act> 
-<all_atom> : <bool_atom> 
-           | <numeric> 
-           | ( <all_non_paren_expr> )
-<bool_act> : LESS 
-           | MORE 
-           | LESSOREQUAL 
-           | MOREOREQUAL 
-           | == 
-           | != 
-<bool_atom> : <index_funccal> 
-            | BOOL 
-<arith_expr> : <arith_expr_1> <arith_expr_2> 
-<arith_expr_1> : ( <arith_expr> ) 
-               | <arith_non_paren_expr> 
-<arith_expr_2> : <arith_act> <arith_expr_1> 
-               | <> 
-<arith_non_paren_expr> : <arith_atom> <arith_non_paren_expr_1> 
-<arith_non_paren_expr_1> : <arith_act> <arith_non_paren_expr> 
-                         | <> 
-<arith_act> : + 
-            | - 
-            | * 
-            | / 
-            | % 
-<arith_atom> : <index_funccal> 
-             | <numeric> 
-<index_funccal> : <index> 
-                | <function_call> 
+               | <atom>             
+<non_paren> : <atom> <non_paren_1> 
+<non_paren_1> : <all_act> <non_paren> 
+              | <> 
+<act> : LESS 
+      | MORE 
+      | LESSOREQUAL 
+      | MOREOREQUAL 
+      | == 
+      | != 
+      | + 
+      | - 
+      | * 
+      | / 
+      | %  
+<atom> : <bool_atom> 
+       | INT 
+       | FLOAT 
+       | <index_funccal> 
+       | BOOL
+       | <index> 
+       | <function_call>           
+       | ( non_paren )
 <index> : ID <multidimensional_index> 
 <multidimensional_index> : [ <arith_expr> ] <multidimensional_index> 
                          | <> 
-<numeric> : INT 
-          | FLOAT
