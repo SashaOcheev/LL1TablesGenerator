@@ -16,21 +16,21 @@
             | <declar> NEWLINE 
             | <assign> NEWLINE 
             | <while_statement> 
-            | CALL <function_call> NEWLINE 
-            | READ <condition_expr> NEWLINE 
-            | PRINT <condition_expr> NEWLINE 
-            | RETURN <condition_expr> NEWLINE 
+            | CALL <condition_expr>
+            | READ <condition_expr>
+            | PRINT <condition_expr>
+            | RETURN <condition_expr> 
             | NEWLINE 
 <if_statement> : <one_if_statement> <if_statement_app> 
-<one_if_statement> : IF <condition_expr> <construction> 
+<one_if_statement> : IF <all_non_paren_expr> NEWLINE <construction> 
 <if_statement_app> : <elif_statement> <else_statement> 
-<elif_statement> : ELIF <condition_expr> <construction> <elif_statement> 
+<elif_statement> : ELIF <all_non_paren_expr> <construction> <elif_statement> 
                  | <> 
 <else_statement> : ELSE <construction>
                  | <> 
-<while_statement> : WHILE <condition_expr> <construction> 
-                  | DO <construction> WHILE <condition_expr> NEWLINE 
-<condition_expr> : ( <all_expr> ) 
+<while_statement> : WHILE <all_non_paren_expr> NEWLINE <construction> 
+                  | DO <construction> WHILE <condition_expr> 
+<condition_expr> : <all_non_paren_expr> NEWLINE
 <const_assign> : CONST <typename> ID = <right_assign> 
 <declar> : <declar_1> <declar_2> 
 <declar_1> : <typename> ID
@@ -50,19 +50,15 @@
              | <> 
 <list_row_2> : <right_assign> <list_row_1> 
 <right_assign> : <list> 
-               | <all_expr> 
-<all_expr> : <all_expr_1> <all_expr_2> 
-<all_expr_1> : <condition_expr> 
-             | <all_non_paren_expr> 
-<all_expr_2> : <all_act> <all_expr_1> 
-             | <> 
+               | <all_expr>
 <all_non_paren_expr> : <all_atom> <all_non_paren_expr_1> 
 <all_non_paren_expr_1> : <all_act> <all_non_paren_expr> 
                        | <> 
 <all_act> : <arith_act> 
           | <bool_act> 
 <all_atom> : <bool_atom> 
-           | <numeric>
+           | <numeric> 
+           | ( <all_non_paren_expr> )
 <bool_act> : LESS 
            | MORE 
            | LESSOREQUAL 
@@ -70,16 +66,26 @@
            | == 
            | != 
 <bool_atom> : <index_funccal> 
-            | BOOL
+            | BOOL 
+<arith_expr> : <arith_expr_1> <arith_expr_2> 
+<arith_expr_1> : ( <arith_expr> ) 
+               | <arith_non_paren_expr> 
+<arith_expr_2> : <arith_act> <arith_expr_1> 
+               | <> 
+<arith_non_paren_expr> : <arith_atom> <arith_non_paren_expr_1> 
+<arith_non_paren_expr_1> : <arith_act> <arith_non_paren_expr> 
+                         | <> 
 <arith_act> : + 
             | - 
             | * 
             | / 
-            | %
+            | % 
+<arith_atom> : <index_funccal> 
+             | <numeric> 
 <index_funccal> : <index> 
                 | <function_call> 
 <index> : ID <multidimensional_index> 
-<multidimensional_index> : [ <all_expr> ] <multidimensional_index> 
+<multidimensional_index> : [ <arith_expr> ] <multidimensional_index> 
                          | <> 
 <numeric> : INT 
           | FLOAT
