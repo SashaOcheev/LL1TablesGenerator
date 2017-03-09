@@ -72,5 +72,6 @@
        | <function_call>           
        | ( <non_paren> )
 <index> : ID <multidimensional_index> 
-<multidimensional_index> : [ <arith_expr> ] <multidimensional_index> 
-                         | <>
+<multidimensional_index> : [ <atom> ] <multidimensional_index> 
+                         | VAL
+                         | REF
